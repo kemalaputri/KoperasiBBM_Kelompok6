@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/functions.php';
 
+if(isLoggedIn()) {
+    redirect_to_role_home();
+}
+
  $error = "";
  $success = "";
 
@@ -18,11 +22,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bagian = isset($_POST['bagian_internal']) ? mysqli_real_escape_string($conn, $_POST['bagian_internal']) : NULL;
 
     if($password !== $konfirmasi) {
-        $error = "Password dan konfirmasi tidak cocok!";
+        $error = "Kata sandi dan konfirmasi tidak cocok!";
     } else {
         $check = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
         if(mysqli_num_rows($check) > 0) {
-            $error = "Username sudah digunakan!";
+            $error = "Nama pengguna sudah digunakan!";
         } else {
             $hash_pass = password_hash($password, PASSWORD_DEFAULT);
             $query = "INSERT INTO users (nama_lengkap, username, password, no_telepon, role, jenis_anggota, nis, nip, bagian_internal) 
@@ -66,15 +70,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" name="nama_lengkap" required>
             </div>
             <div class="form-group">
-                <label>Username</label>
+                <label>Nama Pengguna</label>
                 <input type="text" name="username" required>
             </div>
             <div class="form-group">
-                <label>Password</label>
+                <label>Kata Sandi</label>
                 <input type="password" name="password" required>
             </div>
             <div class="form-group">
-                <label>Konfirmasi Password</label>
+                <label>Konfirmasi Kata Sandi</label>
                 <input type="password" name="konfirmasi_password" required>
             </div>
             <div class="form-group">

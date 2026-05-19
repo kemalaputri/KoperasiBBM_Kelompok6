@@ -80,4 +80,73 @@ document.addEventListener("DOMContentLoaded", function() {
             navMenu.classList.toggle('show');
         });
     }
+
 });
+
+// Admin/Operator hamburger dibuat global agar tetap jalan walau app.js dimuat ulang/di akhir halaman.
+if(!window.__panelMenuToggleBound) {
+    window.__panelMenuToggleBound = true;
+    document.addEventListener('click', function(event) {
+        const toggle = event.target.closest('#panelMenuToggle');
+        if(!toggle) return;
+
+        const panelNav = document.getElementById('panelNav');
+        if(!panelNav) return;
+
+        panelNav.classList.toggle('show');
+        toggle.classList.toggle('active');
+    });
+}
+
+if(!window.__logoutConfirmBound) {
+    window.__logoutConfirmBound = true;
+    let pendingLogoutUrl = '';
+
+    function ensureLogoutModal() {
+        let modal = document.getElementById('logoutConfirmModal');
+        if(modal) return modal;
+
+        modal = document.createElement('div');
+        modal.id = 'logoutConfirmModal';
+        modal.className = 'logout-confirm-overlay';
+        modal.innerHTML = `
+            <div class="logout-confirm-box" role="dialog" aria-modal="true" aria-labelledby="logoutConfirmTitle">
+                <h3 id="logoutConfirmTitle">Apakah Anda yakin ingin keluar?</h3>
+                <div class="logout-confirm-actions">
+                    <button type="button" class="btn btn-outline" id="logoutCancelBtn">Batal</button>
+                    <button type="button" class="btn btn-danger" id="logoutConfirmBtn">Keluar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector('#logoutCancelBtn').addEventListener('click', function() {
+            modal.classList.remove('show');
+            pendingLogoutUrl = '';
+        });
+
+        modal.querySelector('#logoutConfirmBtn').addEventListener('click', function() {
+            if(pendingLogoutUrl) {
+                window.location.href = pendingLogoutUrl;
+            }
+        });
+
+        modal.addEventListener('click', function(event) {
+            if(event.target === modal) {
+                modal.classList.remove('show');
+                pendingLogoutUrl = '';
+            }
+        });
+
+        return modal;
+    }
+
+    document.addEventListener('click', function(event) {
+        const logoutLink = event.target.closest('a[href*="/auth/logout.php"], a[href$="auth/logout.php"]');
+        if(!logoutLink) return;
+
+        event.preventDefault();
+        pendingLogoutUrl = logoutLink.href;
+        ensureLogoutModal().classList.add('show');
+    });
+}

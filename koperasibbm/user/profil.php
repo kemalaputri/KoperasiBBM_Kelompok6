@@ -11,11 +11,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = $_POST['password'];
     $konf = $_POST['konfirmasi_password'];
     if(strlen($pass) < 6) { $msg = "<div class='alert alert-danger'>Minimal 6 karakter!</div>"; }
-    elseif($pass != $konf) { $msg = "<div class='alert alert-danger'>Password tidak sama!</div>"; }
+    elseif($pass != $konf) { $msg = "<div class='alert alert-danger'>Kata sandi tidak sama!</div>"; }
     else {
         $hash = password_hash($pass, PASSWORD_DEFAULT);
         mysqli_query($conn, "UPDATE users SET password='$hash' WHERE id_user=$id_user");
-        $msg = "<div class='alert alert-success'>Password diubah!</div>";
+        $msg = "<div class='alert alert-success'>Kata sandi berhasil diubah!</div>";
     }
 }
 ?>
@@ -30,17 +30,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="card">
         <table>
             <tr><td width="130">Nama</td><td>: <?php echo htmlspecialchars($u['nama_lengkap']); ?></td></tr>
-            <tr><td>Username</td><td>: <?php echo htmlspecialchars($u['username']); ?></td></tr>
+            <tr><td>Nama Pengguna</td><td>: <?php echo htmlspecialchars($u['username']); ?></td></tr>
             <tr><td>Telepon</td><td>: <?php echo htmlspecialchars($u['no_telepon']); ?></td></tr>
             <tr><td>Jenis Anggota</td><td>: <?php echo $u['jenis_anggota']; ?></td></tr>
         </table>
     </div>
     <div class="card" style="margin-top:20px;">
-        <h3>Ubah Password</h3>
+        <h3>Ubah Kata Sandi</h3>
         <form method="POST" style="margin-top:15px;">
-            <div class="form-group"><label>Password Baru</label><input type="password" name="password" required></div>
-            <div class="form-group"><label>Konfirmasi Password</label><input type="password" name="konfirmasi_password" required></div>
-            <button type="submit" class="btn btn-primary">Simpan Password</button>
+            <div class="form-group"><label>Kata Sandi Baru</label><input type="password" name="password" required></div>
+            <div class="form-group"><label>Konfirmasi Kata Sandi</label><input type="password" name="konfirmasi_password" required></div>
+            <button type="submit" class="btn btn-primary">Simpan Kata Sandi</button>
         </form>
     </div>
 </div>

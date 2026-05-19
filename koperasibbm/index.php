@@ -2,6 +2,16 @@
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/functions.php';
 
+if(isLoggedIn() && getUserRole() == 'admin') {
+    header("Location: " . base_url() . "/admin/dashboard.php");
+    exit;
+}
+
+if(isLoggedIn() && getUserRole() == 'operator') {
+    header("Location: " . base_url() . "/operator/dashboard.php");
+    exit;
+}
+
 // Ambil data kategori
  $kategori = mysqli_query($conn, "SELECT * FROM kategori");
 

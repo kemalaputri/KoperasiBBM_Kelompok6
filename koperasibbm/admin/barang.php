@@ -71,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])) {
 if(isset($_GET['export'])) {
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=Data_Barang_Koperasi.xls");
-    echo "Nama Produk\tKategori\tHarga\tStok\tStatus\tTanggal Update\n";
+    echo "Nama Produk\tKategori\tHarga\tStok\tStatus\tTanggal Diperbarui\n";
     $res = mysqli_query($conn, "SELECT p.*, k.nama_kategori FROM produk p JOIN kategori k ON p.id_kategori=k.id_kategori");
     while($r = mysqli_fetch_assoc($res)) {
         $st = $r['stok']==0?'Habis':($r['stok']<=20?'Terbatas':'Tersedia');
@@ -90,7 +90,7 @@ if(isset($_GET['export'])) {
 <div class="admin-container">
     <?php include __DIR__ . '/../includes/admin_sidebar.php'; ?>
     <div class="main-panel">
-        <div class="topbar"><h2>Kelola Barang</h2><a href="?export=1" class="btn btn-success">Export Excel</a></div>
+        <div class="topbar"><h2>Kelola Barang</h2><a href="?export=1" class="btn btn-success">Ekspor Excel</a></div>
         <div class="content-wrapper">
             <?php echo $msg; ?>
             <div class="card">
@@ -156,7 +156,7 @@ if(isset($_GET['export'])) {
             </div>
             <div class="form-group"><label>Gambar Baru (Kosongkan jika tidak ganti)</label><input type="file" name="gambar" accept="image/jpeg,image/png"></div>
             <div class="form-group"><label>Deskripsi</label><textarea name="deskripsi" id="edit_deskripsi" rows="3"></textarea></div>
-            <button type="submit" name="edit" class="btn btn-primary">Update</button>
+            <button type="submit" name="edit" class="btn btn-primary">Perbarui</button>
         </form>
     </div>
 </div>

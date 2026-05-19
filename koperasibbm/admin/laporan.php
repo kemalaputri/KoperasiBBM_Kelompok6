@@ -12,14 +12,14 @@ if(isset($_GET['delete'])) {
     $msg = "<div class='alert alert-success'>Laporan dihapus.</div>";
 }
 
-// Export Excel
+// Ekspor Excel
 if(isset($_GET['export_laporan'])) {
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=Laporan_Koperasi.xls");
-    echo "Operator\tJenis Laporan\tPeriode\tTotal Online\tTotal Offline\tTotal Pendapatan\tTanggal Dikirim\n";
+    echo "Operator\tJenis Laporan\tPeriode\tPesanan Daring\tPenjualan Langsung\tTotal Pendapatan\tTanggal Dikirim\n";
     $res = mysqli_query($conn, "SELECT l.*, u.nama_lengkap FROM laporan l JOIN users u ON l.dibuat_oleh=u.id_user WHERE l.sent_at IS NOT NULL ORDER BY l.sent_at DESC");
     while($r = mysqli_fetch_assoc($res)) {
-        echo $r['nama_laporan']."\t".$r['tipe_laporan']."\t".$r['tanggal_mulai']." s/d ".$r['tanggal_selesai']."\t".$r['total_online']."\t".$r['total_offline']."\t".$r['total_pendapatan']."\t".$r['sent_at']."\n";
+        echo $r['nama_lengkap']."\t".$r['tipe_laporan']."\t".$r['tanggal_mulai']." s/d ".$r['tanggal_selesai']."\t".$r['total_online']."\t".$r['total_offline']."\t".$r['total_pendapatan']."\t".$r['sent_at']."\n";
     }
     exit;
 }
@@ -37,7 +37,7 @@ if(isset($_GET['export_laporan'])) {
     <div class="main-panel">
         <div class="topbar">
             <h2>Laporan Masuk</h2>
-            <a href="?export_laporan=1" class="btn btn-success">Export Excel</a>
+            <a href="?export_laporan=1" class="btn btn-success">Ekspor Excel</a>
         </div>
         <div class="content-wrapper">
             <?php echo $msg; ?>
@@ -49,8 +49,8 @@ if(isset($_GET['export_laporan'])) {
                             <th>Operator</th>
                             <th>Jenis Laporan</th>
                             <th>Periode</th>
-                            <th>Total Online</th>
-                            <th>Total Offline</th>
+                            <th>Pesanan Daring</th>
+                            <th>Penjualan Langsung</th>
                             <th>Total Pendapatan</th>
                             <th>Tanggal Dikirim</th>
                             <th>Aksi</th>
@@ -101,11 +101,11 @@ if(isset($_GET['export_laporan'])) {
         </div>
         <hr style="margin:15px 0; border-color:var(--border-color);">
         <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-            <span style="color:var(--text-gray);">Total Online</span>
+            <span style="color:var(--text-gray);">Pesanan Daring</span>
             <span id="detOn" style="font-weight:600;"></span>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-            <span style="color:var(--text-gray);">Total Offline</span>
+            <span style="color:var(--text-gray);">Penjualan Langsung</span>
             <span id="detOff" style="font-weight:600;"></span>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:700; margin-top:10px; padding-top:10px; border-top:2px solid var(--border-color);">

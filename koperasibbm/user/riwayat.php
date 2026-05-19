@@ -19,7 +19,7 @@ while($ao = mysqli_fetch_assoc($active_orders)) {
     if($now > $waktu_ambil) {
         // Lewat waktu, batalkan otomatis
         $id_cancel = $ao['id_pesanan'];
-        mysqli_query($conn, "UPDATE pesanan SET status='Dibatalkan' WHERE id_pesanan=$id_cancel");
+        mysqli_query($conn, "UPDATE pesanan SET status='Batal' WHERE id_pesanan=$id_cancel");
         // Kembalikan stok
         $items_q = mysqli_query($conn, "SELECT id_produk, jumlah FROM detail_pesanan WHERE id_pesanan=$id_cancel");
         while($item = mysqli_fetch_assoc($items_q)) {
@@ -53,8 +53,8 @@ while($ao = mysqli_fetch_assoc($active_orders)) {
         
         $badge_class = 'badge-info';
         if($p['status'] == 'Siap diambil') $badge_class = 'badge-warning';
-        if($p['status'] == 'Selesai diambil') $badge_class = 'badge-success';
-        if($p['status'] == 'Dibatalkan') $badge_class = 'badge-danger';
+        if($p['status'] == 'Selesai') $badge_class = 'badge-success';
+        if($p['status'] == 'Batal') $badge_class = 'badge-danger';
     ?>
     <div class="card" style="margin-bottom:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">

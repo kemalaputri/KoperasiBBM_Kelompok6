@@ -43,7 +43,7 @@ if(isLoggedIn() && $role == 'user') {
         
         <div class="dropdown-menu" id="profileDropdown">
             <a href="<?php echo base_url(); ?>/user/profil.php">👤 Profil</a>
-            <a href="<?php echo base_url(); ?>/auth/logout.php">🚪 Logout</a>
+            <a href="<?php echo base_url(); ?>/auth/logout.php">🚪 Keluar</a>
         </div>
     </div>
 
@@ -58,7 +58,7 @@ if(isLoggedIn() && $role == 'user') {
 
     <?php else: ?>
     <div class="navbar-auth">
-        <a href="<?php echo base_url(); ?>/auth/logout.php" class="btn btn-outline">Logout</a>
+        <a href="<?php echo base_url(); ?>/auth/logout.php" class="btn btn-outline">Keluar</a>
     </div>
     <?php endif; ?>
 </nav>

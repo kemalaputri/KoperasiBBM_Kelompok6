@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pesan_sekarang'])) {
 
     if($valid) {
         // Cek Kuota Slot
-        $slot_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM pesanan WHERE tanggal_ambil='$tanggal_ambil' AND jam_ambil='$jam_ambil' AND status NOT IN ('Dibatalkan')"))['t'];
+        $slot_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM pesanan WHERE tanggal_ambil='$tanggal_ambil' AND jam_ambil='$jam_ambil' AND status <> 'Batal'"))['t'];
         if($slot_count >= 10) {
             $msg = "<div class='alert alert-danger'>Slot waktu ini sudah penuh! Silakan pilih waktu lain.</div>";
             $valid = false;

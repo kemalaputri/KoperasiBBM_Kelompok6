@@ -37,12 +37,12 @@ if(isset($_POST['simpan_transaksi'])) {
 ?>
 <!DOCTYPE html>
 <html lang="id">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transaksi Offline</title><link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/style.css"></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Penjualan Langsung</title><link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/style.css"></head>
 <body>
 <div class="admin-container">
     <?php include __DIR__ . '/../includes/operator_sidebar.php'; ?>
     <div class="main-panel">
-        <div class="topbar"><h2>Transaksi Offline</h2></div>
+        <div class="topbar"><h2>Penjualan Langsung</h2></div>
         <div class="content-wrapper">
             <p style="margin-bottom:15px; color:var(--text-gray);">Catat transaksi penjualan langsung</p>
             <?php echo $msg; ?>
@@ -76,7 +76,7 @@ if(isset($_POST['simpan_transaksi'])) {
             <div class="card" style="margin:0;">
                 <h3 style="margin-bottom:15px;">Transaksi Terbaru</h3>
                 <table>
-                    <thead><tr><th>Kasir</th><th>Total</th><th>Waktu</th></tr></thead>
+                    <thead><tr><th>Operator</th><th>Total</th><th>Waktu</th></tr></thead>
                     <tbody>
                     <?php while($t = mysqli_fetch_assoc($trans_terbaru)): ?>
                     <tr>

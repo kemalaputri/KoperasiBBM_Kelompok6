@@ -81,7 +81,7 @@ if($kat_id > 0) $where .= " AND p.id_kategori=$kat_id";
                             <th>Kategori</th>
                             <th>Stok</th>
                             <th>Status</th>
-                            <th>Update Terakhir</th>
+                            <th>Terakhir Diperbarui</th>
                         </tr>
                     </thead>
                     <tbody>

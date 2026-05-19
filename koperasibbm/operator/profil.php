@@ -11,11 +11,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = $_POST['password'];
     $konf = $_POST['konfirmasi_password'];
     if(strlen($pass) < 6) { $msg = "<div class='alert alert-danger'>Minimal 6 karakter!</div>"; }
-    elseif($pass != $konf) { $msg = "<div class='alert alert-danger'>Password dan konfirmasi tidak sama!</div>"; }
+    elseif($pass != $konf) { $msg = "<div class='alert alert-danger'>Kata sandi dan konfirmasi tidak sama!</div>"; }
     else {
         $hash = password_hash($pass, PASSWORD_DEFAULT);
-        mysqli_query($conn, "INSERT INTO password_request (id_user, new_password, status) VALUES ('$user_id', '$hash', 'pending')");
-        $msg = "<div class='alert alert-success'>Pengajuan perubahan password telah dikirim ke Admin. Silakan tunggu persetujuan.</div>";
+        $stmt = $conn->prepare("INSERT INTO password_request (id_user, new_password, status) VALUES (?, ?, 'Pending')");
+        $stmt->bind_param("is", $user_id, $hash);
+        $stmt->execute();
+        $msg = "<div class='alert alert-success'>Pengajuan perubahan kata sandi telah dikirim ke admin. Silakan tunggu persetujuan.</div>";
     }
 }
 ?>
@@ -36,24 +38,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3 style="margin-bottom:15px;">Informasi Akun</h3>
                     <table>
                         <tr><td style="width:130px; font-weight:600;">Nama Lengkap</td><td>: <?php echo htmlspecialchars($u['nama_lengkap'] ?? ''); ?></td></tr>
-                        <tr><td style="font-weight:600;">Username</td><td>: <?php echo htmlspecialchars($u['username'] ?? ''); ?></td></tr>
+                        <tr><td style="font-weight:600;">Nama Pengguna</td><td>: <?php echo htmlspecialchars($u['username'] ?? ''); ?></td></tr>
                         <tr><td style="font-weight:600;">Nomor Telepon</td><td>: <?php echo htmlspecialchars($u['no_telepon'] ?? '-'); ?></td></tr>
                         <tr><td style="font-weight:600;">Role</td><td>: <span class="badge badge-warning">Operator</span></td></tr>
                     </table>
                 </div>
                 
                 <div class="card" style="margin:0;">
-                    <h3 style="margin-bottom:15px;">Pengajuan Perubahan Password</h3>
+                    <h3 style="margin-bottom:15px;">Pengajuan Perubahan Kata Sandi</h3>
                     <form method="POST">
                         <div class="form-group">
-                            <label>Password Baru</label>
+                            <label>Kata Sandi Baru</label>
                             <input type="password" name="password" required>
                         </div>
                         <div class="form-group">
-                            <label>Konfirmasi Password Baru</label>
+                            <label>Konfirmasi Kata Sandi Baru</label>
                             <input type="password" name="konfirmasi_password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Ajukan Perubahan Password</button>
+                        <button type="submit" class="btn btn-primary">Ajukan Perubahan Kata Sandi</button>
                     </form>
                 </div>
             </div>

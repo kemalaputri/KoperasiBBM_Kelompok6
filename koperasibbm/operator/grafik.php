@@ -18,11 +18,11 @@ if(!isLoggedIn() || getUserRole() != 'operator') { header("Location: " . base_ur
             
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
                 <div class="card" style="margin:0;">
-                    <h3 style="margin-bottom:15px; font-size:0.9rem;">Pesanan Online (7 Hari)</h3>
+                    <h3 style="margin-bottom:15px; font-size:0.9rem;">Pesanan Daring (7 Hari)</h3>
                     <canvas id="chartOnline"></canvas>
                 </div>
                 <div class="card" style="margin:0;">
-                    <h3 style="margin-bottom:15px; font-size:0.9rem;">Transaksi Offline (7 Hari)</h3>
+                    <h3 style="margin-bottom:15px; font-size:0.9rem;">Penjualan Langsung (7 Hari)</h3>
                     <canvas id="chartOffline"></canvas>
                 </div>
             </div>
@@ -45,7 +45,7 @@ if(!isLoggedIn() || getUserRole() != 'operator') { header("Location: " . base_ur
 new Chart(document.getElementById('chartOnline').getContext('2d'), { 
     type: 'line', data: { 
         labels: [<?php for($i=6;$i>=0;$i--) echo "'".date('d M', strtotime("-$i days"))."',"; ?>], 
-        datasets: [{ label: 'Online', data: [<?php for($i=6;$i>=0;$i--) { $t=date('Y-m-d', strtotime("-$i days")); $c=mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM pesanan WHERE DATE(created_at)='$t'"))['t']??0; echo "$c,"; } ?>], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true }] }, 
+        datasets: [{ label: 'Pesanan Daring', data: [<?php for($i=6;$i>=0;$i--) { $t=date('Y-m-d', strtotime("-$i days")); $c=mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM pesanan WHERE DATE(created_at)='$t'"))['t']??0; echo "$c,"; } ?>], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true }] }, 
     options: { responsive: true, plugins: { legend: { display: false } } } 
 });
 
@@ -53,7 +53,7 @@ new Chart(document.getElementById('chartOnline').getContext('2d'), {
 new Chart(document.getElementById('chartOffline').getContext('2d'), { 
     type: 'bar', data: { 
         labels: [<?php for($i=6;$i>=0;$i--) echo "'".date('d M', strtotime("-$i days"))."',"; ?>], 
-        datasets: [{ label: 'Offline', data: [<?php for($i=6;$i>=0;$i--) { $t=date('Y-m-d', strtotime("-$i days")); $c=mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM transaksi_offline WHERE DATE(created_at)='$t'"))['t']??0; echo "$c,"; } ?>], backgroundColor: '#10b981', borderRadius: 4 }] }, 
+        datasets: [{ label: 'Penjualan Langsung', data: [<?php for($i=6;$i>=0;$i--) { $t=date('Y-m-d', strtotime("-$i days")); $c=mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM transaksi_offline WHERE DATE(created_at)='$t'"))['t']??0; echo "$c,"; } ?>], backgroundColor: '#10b981', borderRadius: 4 }] }, 
     options: { responsive: true, plugins: { legend: { display: false } } } 
 });
 

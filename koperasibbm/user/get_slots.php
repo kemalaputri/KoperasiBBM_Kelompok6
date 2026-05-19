@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 
  $data = [];
 if($tanggal) {
-    $q = mysqli_query($conn, "SELECT jam_ambil, COUNT(*) as total FROM pesanan WHERE tanggal_ambil='$tanggal' AND status NOT IN ('Dibatalkan') GROUP BY jam_ambil");
+    $q = mysqli_query($conn, "SELECT jam_ambil, COUNT(*) as total FROM pesanan WHERE tanggal_ambil='$tanggal' AND status <> 'Batal' GROUP BY jam_ambil");
     while($r = mysqli_fetch_assoc($q)) {
         $data[$r['jam_ambil']] = (int)$r['total'];
     }

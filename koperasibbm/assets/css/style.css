@@ -131,6 +131,9 @@ a { text-decoration: none; color: inherit; }
 .sidebar-brand { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.1); }
 .sidebar-brand img { height: 35px; }
 .sidebar-brand h3 { font-size: 1rem; line-height: 1.2; color: white; font-weight: 700; }
+.panel-menu-toggle { display: none; margin-left: auto; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; background: rgba(255,255,255,0.08); color: white; font-size: 1.25rem; cursor: pointer; align-items: center; justify-content: center; }
+.panel-menu-toggle.active { background: var(--primary); border-color: var(--primary); }
+.sidebar-collapsible { display: flex; flex-direction: column; flex-grow: 1; }
 .sidebar-profile { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .sidebar-profile .avatar { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 10px; font-weight: bold; }
 .sidebar-profile p { font-size: 0.85rem; opacity: 0.8; }
@@ -146,7 +149,7 @@ a { text-decoration: none; color: inherit; }
 .content-wrapper { padding: 30px; flex: 1; }
 
 /* ================= PANEL COMPONENTS ================= */
-.card { background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+.card { background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); max-width: 100%; overflow-x: auto; }
 .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
 .card h3 { color: var(--text-dark); font-size: 1rem; font-weight: 700; }
 
@@ -156,6 +159,9 @@ a { text-decoration: none; color: inherit; }
 .stat-details p { margin: 0; color: var(--text-gray); font-size: 0.85rem; font-weight: 500; }
 
 table { width: 100%; border-collapse: collapse; }
+.card > table, .card .table-responsive table { min-width: 720px; }
+.card table th, .card table td { white-space: nowrap; vertical-align: middle; }
+.card table td:last-child { white-space: normal; min-width: 150px; }
 table th, table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
 table th { background: var(--bg-light); font-weight: 700; color: var(--text-gray); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color); }
 table tr:hover { background: #f8fafc; }
@@ -173,6 +179,12 @@ table tr:hover { background: #f8fafc; }
 .modal-content { background: white; padding: 25px; border-radius: 16px; width: 100%; max-width: 500px; position: relative; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
 .modal-close { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; color: var(--text-gray); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.2s; }
 .modal-close:hover { background: var(--bg-light); color: var(--text-dark); }
+.logout-confirm-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(15, 23, 42, 0.5); align-items: center; justify-content: center; padding: 20px; }
+.logout-confirm-overlay.show { display: flex; }
+.logout-confirm-box { width: 100%; max-width: 360px; background: white; border-radius: 12px; padding: 22px; box-shadow: 0 20px 35px rgba(15, 23, 42, 0.2); border: 1px solid var(--border-color); text-align: center; }
+.logout-confirm-box h3 { font-size: 1rem; margin-bottom: 18px; color: var(--text-dark); }
+.logout-confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.logout-confirm-actions .btn { width: 100%; }
 
 /* QR & Autocomplete */
 #reader { width: 100%; border: 2px solid var(--primary); border-radius: 12px; overflow: hidden; }
@@ -180,6 +192,7 @@ table tr:hover { background: #f8fafc; }
 .autocomplete-items { position: absolute; border: 1px solid var(--border-color); border-top: none; z-index: 99; top: 100%; left: 0; right: 0; background: white; max-height: 200px; overflow-y: auto; border-radius: 0 0 8px 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
 .autocomplete-items div { padding: 10px; cursor: pointer; background-color: #fff; border-bottom: 1px solid var(--border-color); }
 .autocomplete-items div:hover { background-color: var(--bg-light); }
+#tableOpname { min-width: 620px; }
 
 /* Footer */
 .footer { background: var(--sidebar-bg); color: white; padding: 50px 20px 0; margin-top: 40px; border-radius: 20px 20px 0 0; }
@@ -194,6 +207,7 @@ table tr:hover { background: #f8fafc; }
     width: 100%;
     overflow-x: auto;
     margin-bottom: 15px;
+    -webkit-overflow-scrolling: touch;
 }
 .table-responsive table {
     min-width: 900px; /* Mencegah tabel pecah di layar kecil */
@@ -211,11 +225,41 @@ table tr:hover { background: #f8fafc; }
     .hero h1 { font-size: 2rem; }
     .hero { min-height: 350px; }
     .info-section { margin-top: -20px; }
+
+    /* Product cards dibuat lebih ringkas di HP */
+    .product-section { padding: 28px 12px 40px; }
+    .product-section .container { padding: 0; }
+    .section-title { font-size: 1.15rem; margin-bottom: 14px; padding-left: 10px; }
+    .filter-bar { gap: 6px; padding: 10px; margin-bottom: 16px; border-radius: 10px; }
+    .filter-btn { padding: 6px 10px; font-size: 0.75rem; border-radius: 16px; }
+    .search-box { min-width: 100%; }
+    .search-box input { padding: 8px 12px; font-size: 0.82rem; border-radius: 18px; }
+    .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .product-card { border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+    .product-card:hover { transform: none; }
+    .product-img { height: 105px; }
+    .product-info { padding: 10px; }
+    .product-name { font-size: 0.82rem; margin-bottom: 5px; line-height: 1.25; }
+    .product-price { font-size: 0.95rem; margin-bottom: 6px; }
+    .stock-status { font-size: 0.68rem; margin-bottom: 10px; padding: 3px 7px; border-radius: 10px; }
+    .product-action .btn { padding: 8px 6px; font-size: 0.72rem; border-radius: 8px; line-height: 1.2; }
     
     /* Admin & Operator Panel */
     .admin-container { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; position: relative; }
+    .sidebar { width: 100%; height: auto; position: sticky; top: 0; overflow: visible; }
+    .sidebar-brand { padding: 12px 14px; min-height: 60px; }
+    .sidebar-brand img { height: 32px; }
+    .sidebar-brand h3 { font-size: 0.92rem; }
+    .panel-menu-toggle { display: flex; }
+    .sidebar-collapsible { display: none; max-height: calc(100vh - 60px); overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-collapsible.show { display: block; }
+    .sidebar-profile { padding: 12px 16px; display: flex; align-items: center; gap: 10px; text-align: left; }
+    .sidebar-profile .avatar { width: 38px; height: 38px; font-size: 1rem; margin: 0; flex-shrink: 0; }
+    .sidebar-menu { padding: 8px; }
+    .sidebar-menu li a { padding: 10px 12px; font-size: 0.85rem; margin-bottom: 1px; }
     .main-panel { margin-left: 0; }
+    .topbar { padding: 12px 16px; }
+    .content-wrapper { padding: 16px; }
     
     /* Forms */
     .form-row { flex-direction: column; gap: 0; }
@@ -224,4 +268,23 @@ table tr:hover { background: #f8fafc; }
     .content-wrapper > div[style*="grid"] {
         grid-template-columns: 1fr !important;
     }
+    .card { padding: 14px; }
+    .card > table, .card .table-responsive table { min-width: 680px; }
+    .card table th, .card table td { padding: 10px 12px; font-size: 0.82rem; }
+    .topbar { gap: 10px; align-items: flex-start; }
+    .topbar .btn { white-space: nowrap; }
+    .content-wrapper form[method="GET"] { flex-wrap: wrap; }
+    .content-wrapper form[method="GET"] input,
+    .content-wrapper form[method="GET"] select,
+    .content-wrapper form[method="GET"] .btn,
+    .content-wrapper form[method="GET"] button { width: 100%; flex: 1 1 100% !important; }
+}
+
+@media (max-width: 360px) {
+    .product-grid { gap: 8px; }
+    .product-img { height: 92px; }
+    .product-info { padding: 8px; }
+    .product-name { font-size: 0.76rem; }
+    .product-price { font-size: 0.86rem; }
+    .product-action .btn { font-size: 0.68rem; }
 }

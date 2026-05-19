@@ -35,8 +35,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['buat_laporan'])) {
     }
 
     if($mulai && $selesai) {
-        // Hitung Total Online (Status Selesai diambil)
-        $total_on = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_harga),0) as t FROM pesanan WHERE status='Selesai diambil' AND DATE(created_at) BETWEEN '$mulai' AND '$selesai'"))['t'];
+        // Hitung Total Online (Status Selesai)
+        $total_on = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_harga),0) as t FROM pesanan WHERE status='Selesai' AND DATE(created_at) BETWEEN '$mulai' AND '$selesai'"))['t'];
         // Hitung Total Offline
         $total_off = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_harga),0) as t FROM transaksi_offline WHERE DATE(created_at) BETWEEN '$mulai' AND '$selesai'"))['t'];
         $total_all = $total_on + $total_off;
@@ -92,8 +92,8 @@ if(isset($_GET['kirim_admin'])) {
                         <tr>
                             <th>Tipe Laporan</th>
                             <th>Periode</th>
-                            <th>Total Online</th>
-                            <th>Total Offline</th>
+                            <th>Pesanan Daring</th>
+                            <th>Penjualan Langsung</th>
                             <th>Total Pendapatan</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -111,7 +111,7 @@ if(isset($_GET['kirim_admin'])) {
                             <?php if(!empty($l['sent_at'])): ?>
                                 <span class="badge badge-success">Terkirim</span>
                             <?php else: ?>
-                                <span class="badge badge-warning">Draft</span>
+                                <span class="badge badge-warning">Draf</span>
                             <?php endif; ?>
                         </td>
                         <td>
